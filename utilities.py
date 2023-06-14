@@ -84,7 +84,7 @@ def obtain_keys(p:int, q:int):
             break
     
     # Choose the modulo phin inverse number of e: d such that d*e = 1 mod phin
-    k = 2
+    
     # d = ((k * phin) +1) // e
     for x in range(2, phin):
         if x*e % phin == 1:
@@ -118,19 +118,27 @@ def get_public_key(p, q):
 
 
 
-def get_private_key(p, q):
+def get_private_key(p, q, key_e):
     '''
     Gets the private key when the two primes are p and q.
 
     Input:
         - p (int): First prime number of the RSA algorithm
         - q (int): Second prime number of the RSA algorithm
+        - key_d (int): First number of the public key
     
     Output:
         - private_key_d (int): First number of the private key
         - private_key_n (int): Product of p and q, second number of the private key
     '''
-    _, private_key_d, private_key_n = obtain_keys(p, q)
+    phin = (p-1)*(q-1)
+    for x in range(2, phin):
+        if x*key_e % phin == 1:
+            private_key_d = x
+            break
+    
+    private_key_n = p*q
+    # _, private_key_d, private_key_n = obtain_keys(p, q)
     return private_key_d, private_key_n
 
 
